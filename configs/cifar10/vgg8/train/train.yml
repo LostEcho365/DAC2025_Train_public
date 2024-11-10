@@ -1,0 +1,78 @@
+criterion:
+  name: ce
+  
+optimizer:
+  name: adamw
+  lr: 0.002
+  weight_decay: 0.0001
+  grad_clip_value: 0
+
+scheduler:
+  name: cosine
+  lr_gamma: 0.99
+  lr_min: 0.00002
+
+noise:
+  phase_bias: 0
+  phase_noise_std: 0
+  output_noise_std: 0
+  gamma_noise_std: 0
+  crosstalk_factor: 0
+  random_state: 42
+  weight_noise_std: 0.0
+  crosstalk_flag: False
+  noise_flag: False
+  light_redist: False
+  input_power_gating: False
+  input_modulation_ER: 6
+  output_power_gating: False
+  crosstalk_scheduler:
+    interv_h: 20
+    interv_v: 120
+    interv_s: 9
+    ps_width: 6
+
+run:
+  experiment: "cifar10_mobilevit_train"
+  n_epochs: 100
+  batch_size: 256
+  use_cuda: 1
+  gpu_id: 0
+  deterministic: 22
+  log_interval: 200
+  train_noise: 0
+  grad_clip: False
+  max_grad_value: 1
+  do_distill: False
+
+quantize:
+  weight_bit: 8
+  input_bit: 6
+
+checkpoint:
+  save_best_model_k: 3
+  checkpoint_dir: "cifar10/mobileViT/train"
+  model_comment: ""
+  resume: 0
+  restore_checkpoint : ""
+
+model:
+  name: "MobileViT"
+  conv_cfg:
+    type: QConv2d
+  linear_cfg:
+    type: QLinear
+  matmul_cfg:
+    type: QMatMul
+  norm_cfg:
+    type: BN2d
+    affine: True
+  act_cfg:
+    type: ReLU6
+    inplace: True
+
+dst_scheduler: null
+
+debug:
+  verboise: 1
+
