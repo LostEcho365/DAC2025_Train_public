@@ -8,13 +8,15 @@ def test_mobilevit():
     return model
 
 input_tensor = torch.randn(1, 3, 256, 256).to("cuda")
-model = test_mobilevit()
+model = test_mobilevit().to("cuda")
 model.set_input_bitwidth(8)
 model.set_weight_bitwidth(8)
 model.set_output_bitwidth(8)
+# print(model)
+# exit(0)
+output = model(input_tensor)
 print(model)
 exit(0)
-output = model(input_tensor)
 
 # Define a dummy loss function and compute a backward pass for testing
 target = torch.randn_like(output)  # Generating a target tensor of the same shape as output
