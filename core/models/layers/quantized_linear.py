@@ -40,9 +40,9 @@ class QLinear(QBaseLayer):
         in_features: int,
         out_features: int,
         bias: bool = True,
-        w_bit: int = 32,
-        in_bit: int = 32,
-        out_bit: int = 32,
+        w_bit: int = 8,
+        in_bit: int = 8,
+        out_bit: int = 8,
         device: Device = (
             torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
         ),
@@ -55,7 +55,6 @@ class QLinear(QBaseLayer):
         self.in_bit = in_bit
         self.out_bit = out_bit
 
-        print(self.device)
 
         ### build trainable parameters
         self.build_parameters()

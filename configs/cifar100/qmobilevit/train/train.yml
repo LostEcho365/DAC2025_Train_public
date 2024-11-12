@@ -1,36 +1,16 @@
 criterion:
   name: ce
-
-aux_criterion: null
-
+  
 optimizer:
   name: adamw
   lr: 0.002
-  weight_decay: 0.01
-  grad_clip_value: 1
+  weight_decay: 0.0001
+  grad_clip_value: 0
 
 scheduler:
   name: cosine
   lr_gamma: 0.99
-  lr_min: 0
-
-run:
-  experiment: "default"
-  n_epochs: 200
-  batch_size: 32
-  use_cuda: 1
-  gpu_id: 0
-  deterministic: 1
-  random_state: 42
-  log_interval: 200
-  train_noise: 0
-  grad_clip: False
-  max_grad_value: 1
-  do_distill: False
-
-quantize:
-  weight_bit: 32
-  input_bit: 32
+  lr_min: 0.00002
 
 noise:
   phase_bias: 0
@@ -50,33 +30,53 @@ noise:
     interv_h: 20
     interv_v: 120
     interv_s: 9
+    ps_width: 6
+
+run:
+  experiment: "cifar100_qmobilevit_train"
+  n_epochs: 200
+  batch_size: 64
+  use_cuda: 1
+  gpu_id: 0
+  deterministic: 22
+  log_interval: 200
+  train_noise: 0
+  grad_clip: False
+  max_grad_value: 1
+  do_distill: False
+
+quantize:
+  weight_bit: 8
+  input_bit: 8
 
 checkpoint:
   save_best_model_k: 3
-  checkpoint_dir: "cifar10/mobilevit/pretrain"
+  checkpoint_dir: "cifar100/qmobileViT/train"
   model_comment: ""
   resume: 0
-  restore_checkpoint: ""
-  no_linear: 0
+  restore_checkpoint : ""
 
 model:
   name: "QMobileViT"
-  # conv_cfg:
-  #   type: TeMPOBlockConv2d
-  #   mode: "weight"
-  #   miniblock: [4, 4, 8, 8]
-  #   w_bit: 32
-  #   in_bit: 32
+  dim: [48, 64, 80]
+  depth: [2, 3, 2]
+  channels: [16, 16, 24, 24, 32, 32, 48, 48, 64, 64, 256]
+  expansion: 2
   conv_cfg:
     type: QConv2d
-  # linear_cfg:
-  #   type: TeMPOBlockLinear
-  #   mode: "weight"
-  #   miniblock: [4, 4, 8, 8]
-  #   w_bit: 32
-  #   in_bit: 32
+    w_bit: 8
+    in_bit: 8
+    out_bit: 8
   linear_cfg:
     type: QLinear
+    w_bit: 8
+    in_bit: 8
+    out_bit: 8
+  matmul_cfg:
+    type: QMatMul
+    w_bit: 8
+    in_bit: 8
+    out_bit: 8
   norm_cfg:
     type: BN2d
     affine: True
@@ -84,6 +84,8 @@ model:
     type: ReLU6
     inplace: True
 
+dst_scheduler: null
+
 debug:
-  verbose: 1
+  verboise: 1
 

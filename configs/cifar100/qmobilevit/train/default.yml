@@ -53,7 +53,7 @@ noise:
 
 checkpoint:
   save_best_model_k: 3
-  checkpoint_dir: "cifar10/mobilevit/pretrain"
+  checkpoint_dir: "cifar100/qmobilevit/pretrain"
   model_comment: ""
   resume: 0
   restore_checkpoint: ""

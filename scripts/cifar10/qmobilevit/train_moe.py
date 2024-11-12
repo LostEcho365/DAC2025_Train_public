@@ -17,7 +17,7 @@ dataset = "cifar10"
 model = "qmobilevit"
 root = f"log/{dataset}/{model}/train/DensePTC"
 script = "train.py"
-config_file = f"configs/{dataset}/{model}/train/train.yml"
+config_file = f"configs/{dataset}/{model}/train/moe.yml"
 configs.load(config_file, recursive=True)
 
 
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     # mlflow.set_experiment(configs.run.experiment)  # set experiments first
 
     tasks = [
-        (0.002, 8, 1, 1),
+        (0.002, 8, 1, 2),
     ]
     with Pool(10) as p:
         p.map(task_launcher, tasks)

@@ -13,7 +13,7 @@ import wandb
 from pyutils.general import ensure_dir, logger
 from pyutils.config import configs
 
-dataset = "cifar10"
+dataset = "cifar100"
 model = "qmobilevit"
 root = f"log/{dataset}/{model}/train/DensePTC"
 script = "train.py"
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     # mlflow.set_experiment(configs.run.experiment)  # set experiments first
 
     tasks = [
-        (0.002, 8, 1, 1),
+        (0.002, 8, 1, 2),
     ]
     with Pool(10) as p:
         p.map(task_launcher, tasks)

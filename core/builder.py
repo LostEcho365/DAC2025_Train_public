@@ -13,12 +13,9 @@ import torch
 import torch.nn as nn
 from pyutils.config import configs
 from pyutils.datasets import get_dataset
-from pyutils.loss import AdaptiveLossSoft, KDLoss, DKDLoss, CrossEntropyLossSmooth
+from pyutils.loss import AdaptiveLossSoft, CrossEntropyLossSmooth
 from pyutils.lr_scheduler.warmup_cosine_restart import CosineAnnealingWarmupRestarts
 from pyutils.optimizer.sam import SAM
-from pyutils.optimizer.dadapt_adam import DAdaptAdam
-from pyutils.optimizer.dadapt_sgd import DAdaptSGD
-from pyutils.optimizer.prodigy import Prodigy
 from pyutils.typing import DataLoader, Optimizer, Scheduler
 from torch.types import Device
 
@@ -239,6 +236,9 @@ def make_model(
             channels= model_cfg.channels,
             num_classes=configs.dataset.num_classes,
             expansion=model_cfg.expansion,
+            is_moe=model_cfg.is_moe,
+            expert_num=model_cfg.expert_num,
+            top_k=model_cfg.top_k,
             conv_cfg=model_cfg.conv_cfg,
             linear_cfg=model_cfg.linear_cfg,
             matmul_cfg=model_cfg.matmul_cfg,
@@ -254,7 +254,7 @@ def make_model(
     img_height = configs.dataset.img_height
     img_width = configs.dataset.img_width
     ## dummy input to initialize quantizer stats
-    model(torch.randn(1, in_channels, img_height, img_width, device=device))
+    model(torch.randn(2, in_channels, img_height, img_width, device=device))
     # crosstalk_scheduler = CrosstalkScheduler(
     #     interv_h=configs.noise.crosstalk_scheduler.interv_h,
     #     interv_v=configs.noise.crosstalk_scheduler.interv_v,
@@ -311,27 +311,6 @@ def make_optimizer(params, name: str = None, configs=None) -> Optimizer:
             lr=configs.lr,
             weight_decay=configs.weight_decay,
         )
-    elif name == "dadapt_adam":
-        optimizer = DAdaptAdam(
-            params,
-            lr=configs.lr,
-            betas=getattr(configs, "betas", (0.9, 0.999)),
-            weight_decay=configs.weight_decay,
-        )
-    elif name == "dadapt_sgd":
-        optimizer = DAdaptSGD(
-            params,
-            lr=configs.lr,
-            momentum=configs.momentum,
-            weight_decay=configs.weight_decay,
-        )
-    elif name == "prodigy":
-        optimizer = Prodigy(
-            params,
-            lr=configs.lr,
-            betas=getattr(configs, "betas", (0.9, 0.999)),
-            weight_decay=configs.weight_decay,
-        )
     else:
         raise NotImplementedError(name)
 
@@ -385,21 +364,6 @@ def make_criterion(name: str = None, cfg=None) -> nn.Module:
         )
     elif name == "adaptive":
         criterion = AdaptiveLossSoft(alpha_min=-1.0, alpha_max=1.0)
-    elif name == "kd":
-        criterion = KDLoss(
-            T=getattr(cfg, "T", 2),
-            ce_weight=getattr(cfg, "ce_weight", 0),
-            kd_weight=getattr(cfg, "kd_weight", 0.9),
-            logit_stand=getattr(cfg, "logit_stand", False),
-        )
-    elif name == "dkd":
-        criterion = DKDLoss(
-            T=getattr(cfg, "T", 2),
-            ce_weight=getattr(cfg, "ce_weight", 0),
-            kd_alpha=getattr(cfg, "kd_alpha", 1),
-            kd_beta=getattr(cfg, "kd_beta", 1),
-            logit_stand=getattr(cfg, "logit_stand", False),
-        )
     else:
         raise NotImplementedError(name)
     return criterion

@@ -246,6 +246,99 @@ class QTransformerEncoderLayer(nn.Module):
         
         return src
 
+
+class MlpExpert(nn.Module):
+    def __init__(self,dim,mlp_dim,linear_cfg,device,dropout):
+        super(MlpExpert, self).__init__()
+        self.activation = nn.ReLU()
+        self.linear1 = Linear(
+            dim, 
+            mlp_dim,
+            linear_cfg=linear_cfg,
+            device=device,
+            )
+        self.dropout = nn.Dropout(dropout)
+        self.linear2 = Linear(
+            mlp_dim, 
+            dim,
+            linear_cfg=linear_cfg,
+            device=device,
+            )
+        
+    def forward(self, src):
+        src = self.linear2(self.dropout(self.activation(self.linear1(src))))
+        return src
+
+        
+class QTransformerMoEEncoderLayer(nn.Module):
+    def __init__(
+        self, 
+        dim, 
+        nhead,
+        dim_heads,
+        mlp_dim, 
+        dropout=0.0,
+        expert_num=8,
+        top_k=2,
+        linear_cfg=dict(type="QLinear"),
+        matmul_cfg=dict(type="QMatMul"),
+        device: Device = (
+            torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")),
+        ):
+        super(QTransformerMoEEncoderLayer, self).__init__()
+        self.self_attn = QAttention(
+            dim, 
+            nhead,
+            dim_head=dim_heads,
+            linear_cfg=linear_cfg,
+            matmul_cfg=matmul_cfg,
+            device=device,
+            )
+        
+        self.expert_num = expert_num
+        self.top_k = top_k
+        self.gate = nn.Linear(dim, expert_num, bias=False)
+        self.experts = nn.ModuleList([
+            MlpExpert(dim,mlp_dim,linear_cfg,device,dropout) 
+            for _ in range(expert_num)
+        ])
+        
+        self.norm1 = nn.LayerNorm(dim)
+        self.norm2 = nn.LayerNorm(dim)
+        
+        self.dropout = nn.Dropout(dropout)
+        
+    def forward(self, src):
+        src2 = self.self_attn(src)
+        src = src + self.dropout(src2)
+        src = self.norm1(src)
+        
+        batch_size, seq_len, dim = src.shape
+        src_flattened = src.reshape(-1, dim)
+        gate_scores = self.gate(src_flattened)
+        gate_scores = nn.functional.softmax(gate_scores, dim=-1)
+
+        top_k_scores, top_k_indices = torch.topk(gate_scores, self.top_k, dim=-1) 
+        top_k_scores /= top_k_scores.sum(dim=-1, keepdim=True)
+        
+        mlp_out = torch.zeros((batch_size*seq_len, dim), device=src.device)
+        expert_mask = F.one_hot(top_k_indices, num_classes=self.expert_num).permute(2, 1, 0)
+
+        for expert_idx in range(self.expert_num):
+            expert_layer = self.experts[expert_idx]
+            idx, top_x = torch.where(expert_mask[expert_idx])
+            expert_in = src_flattened[None, top_x].reshape(-1, dim)
+            expert_out = expert_layer(expert_in) * top_k_scores[top_x, idx].unsqueeze(1)
+            mlp_out.index_add_(0, top_x, expert_out.to(src.dtype))
+
+        mlp_out = mlp_out.view(batch_size, seq_len, dim)
+        
+        out = src + self.dropout(mlp_out)
+        out = self.norm2(out)
+        
+        return out
+
+
 class QMobileViTBlock(nn.Module):
     def __init__(
         self, 
@@ -255,6 +348,9 @@ class QMobileViTBlock(nn.Module):
         patch_size=(2, 2),
         mlp_dim=2048,
         dropout=0.0,
+        is_moe=False,
+        expert_num=8,
+        top_k=2,
         conv_cfg=dict(type="QConv2d"),
         linear_cfg=dict(type="QLinear"),
         matmul_cfg=dict(type="QMatMul"),
@@ -282,19 +378,36 @@ class QMobileViTBlock(nn.Module):
             act_cfg=act_cfg,
             device=device,
             )
-        self.transformer_layers = nn.ModuleList([
-            QTransformerEncoderLayer(
-                dim=dim, 
-                nhead=4,
-                dim_heads=8,
-                mlp_dim=mlp_dim,
-                dropout=dropout,
-                linear_cfg=linear_cfg,
-                matmul_cfg=matmul_cfg,
-                device=device,
-                )
-            for _ in range(depth)
-        ])
+        if is_moe:
+            self.transformer_layers = nn.ModuleList([
+                QTransformerMoEEncoderLayer(
+                    dim=dim, 
+                    nhead=4,
+                    dim_heads=8,
+                    mlp_dim=mlp_dim,
+                    dropout=dropout,
+                    expert_num=expert_num,
+                    top_k=top_k,
+                    linear_cfg=linear_cfg,
+                    matmul_cfg=matmul_cfg,
+                    device=device,
+                    )
+                for _ in range(depth) 
+            ])
+        else:
+            self.transformer_layers = nn.ModuleList([
+                QTransformerEncoderLayer(
+                    dim=dim, 
+                    nhead=4,
+                    dim_heads=8,
+                    mlp_dim=mlp_dim,
+                    dropout=dropout,
+                    linear_cfg=linear_cfg,
+                    matmul_cfg=matmul_cfg,
+                    device=device,
+                    )
+                for _ in range(depth) 
+            ])
         self.conv3 = conv1x1(
             dim, 
             channels, 
@@ -345,6 +458,9 @@ class QMobileViT(QBaseModel):
         image_width: int = 256,
         num_classes: int = 1000,
         expansion: int = 4,
+        is_moe: bool = False,
+        expert_num: int = 8,
+        top_k: int = 2,
         conv_cfg: dict = dict(type="QConv2d"),
         linear_cfg: dict = dict(type="QLinear"),
         matmul_cfg: dict = dict(type="QMatMul"),
@@ -436,6 +552,9 @@ class QMobileViT(QBaseModel):
                 patch_size=patch_size, 
                 mlp_dim=int(dim[0] * 2),
                 device=device, 
+                is_moe=is_moe,
+                expert_num=expert_num,
+                top_k=top_k,
                 conv_cfg=conv_cfg, 
                 linear_cfg=linear_cfg, 
                 matmul_cfg=matmul_cfg
