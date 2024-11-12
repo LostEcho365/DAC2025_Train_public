@@ -4,11 +4,16 @@ import torch.nn as nn
 from core.models import *
 def test_mobilevit():
     model = QMobileViT()
-    print(model)
+    # print(model)
     return model
 
-input_tensor = torch.randn(1, 3, 256, 256)
+input_tensor = torch.randn(1, 3, 256, 256).to("cuda")
 model = test_mobilevit()
+model.set_input_bitwidth(8)
+model.set_weight_bitwidth(8)
+model.set_output_bitwidth(8)
+print(model)
+exit(0)
 output = model(input_tensor)
 
 # Define a dummy loss function and compute a backward pass for testing
@@ -19,3 +24,7 @@ loss = criterion(output, target)
 # Backward pass
 loss.backward()
 print("Backward pass completed")
+
+for param in model.parameters():
+
+    print(param.shape)  # Prints the shape of each parameter

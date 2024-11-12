@@ -191,7 +191,7 @@ class QBaseModel(nn.Module):
         *args,
         conv_cfg=dict(type="QConv2d"),
         linear_cfg=dict(type="QLinear"),
-        matmul_cfg=None,
+        matmul_cfg=dict(type="QMatMul"),
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
@@ -261,7 +261,7 @@ class QBaseModel(nn.Module):
             if isinstance(layer, self._conv_linear) and hasattr(
                 layer, "set_output_bitwidth"
             ):
-                layer.set_input_bitwidth(out_bit)
+                layer.set_output_bitwidth(out_bit)
 
 
     def build_parameters(self) -> None:

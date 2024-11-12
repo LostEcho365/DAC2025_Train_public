@@ -55,6 +55,7 @@ class QLinear(QBaseLayer):
         self.in_bit = in_bit
         self.out_bit = out_bit
 
+        print(self.device)
 
         ### build trainable parameters
         self.build_parameters()

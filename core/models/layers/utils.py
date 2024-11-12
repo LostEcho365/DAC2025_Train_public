@@ -893,6 +893,7 @@ class ActQuantizer_LSQ(nn.Module):
             # )
             # if len(x.shape) == 3:
             #     import pdb; pdb.set_trace()
+            print(x.device, alpha.device, zero_point.device)
             x = round_pass((x / alpha + zero_point).clamp(self.Qn, self.Qp))
             x = (x - zero_point) * alpha
         else:
@@ -995,6 +996,7 @@ class WeightQuantizer_LSQ(nn.Module):
                 if len(x.shape) == 2
                 else zero_point[..., None, None, None]
             )
+            print(x.device, alpha.device, zero_point.device)
             x = round_pass((x / alpha + zero_point).clamp(self.Qn, self.Qp))
             x = (x - zero_point) * alpha
         else:

@@ -5,7 +5,7 @@ import torch
 import torch.nn.functional as F
 from mmengine.registry import MODELS
 from pyutils.general import logger
-from pyutils.quant.lsq import ActQuantizer_LSQ
+# from pyutils.quant.lsq import ActQuantizer_LSQ
 from pyutils.compute import add_gaussian_noise
 from torch import Tensor, nn
 from torch.nn.modules.utils import _pair
@@ -13,6 +13,7 @@ from torch.types import Device, _size
 
 from .utils import (
     WeightQuantizer_LSQ,
+    ActQuantizer_LSQ,
 )
 
 __all__ = [
