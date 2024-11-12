@@ -65,9 +65,9 @@ class QConv2d(QBaseLayer):
         dilation: _size = 1,
         groups: int = 1,
         bias: bool = False,
-        w_bit: int = 32,
-        in_bit: int = 32,
-        out_bit: int = 32,
+        w_bit: int = 8,
+        in_bit: int = 8,
+        out_bit: int = 8,
         device: Device = (
             torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
         ),

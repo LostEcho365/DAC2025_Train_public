@@ -254,7 +254,7 @@ def make_model(
     img_height = configs.dataset.img_height
     img_width = configs.dataset.img_width
     ## dummy input to initialize quantizer stats
-    model(torch.randn(1, in_channels, img_height, img_width, device=device))
+    model(torch.randn(2, in_channels, img_height, img_width, device=device))
     # crosstalk_scheduler = CrosstalkScheduler(
     #     interv_h=configs.noise.crosstalk_scheduler.interv_h,
     #     interv_v=configs.noise.crosstalk_scheduler.interv_v,

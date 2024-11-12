@@ -29,9 +29,9 @@ class QMatMul(nn.Module):
 
     def __init__(
         self,
-        w_bit: int = 32,
-        in_bit: int = 32,
-        out_bit: int = 32,
+        w_bit: int = 8,
+        in_bit: int = 8,
+        out_bit: int = 8,
         device: Device = (
             torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
         ),

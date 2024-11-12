@@ -76,9 +76,15 @@ class InvertedResidual(nn.Module):
         self.conv = nn.Sequential(*layers)
     
     def forward(self, x):
+        # import pdb; pdb.set_trace()
         if self.use_res_connect:
+            
+            out = x + self.conv(x)
+            # import pdb; pdb.set_trace()
             return x + self.conv(x)
         else:
+            out = self.conv(x)
+            # import pdb; pdb.set_trace()
             return self.conv(x)
 
 class QAttention(nn.Module):
@@ -518,12 +524,21 @@ class QMobileViT(QBaseModel):
         
         
     def forward(self, x):
+        # print(x.shape)
+        # import pdb; pdb.set_trace()
         x = self.conv1(x)
+        # print(x.shape)
+        # import pdb; pdb.set_trace()
         x = self.mobvit_blocks(x)
+        # print(x.shape)
+        # import pdb; pdb.set_trace()
         x = self.conv_last(x)
+        # print(x.shape)
+        # import pdb; pdb.set_trace()
         x = self.pool(x)
         x = x.view(x.size(0), -1)
         x = self.final_layer(x)
+        # exit(0)
         return x
 
 def conv3x3(

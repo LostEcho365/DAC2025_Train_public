@@ -34,8 +34,8 @@ noise:
 
 run:
   experiment: "cifar10_qmobilevit_train"
-  n_epochs: 100
-  batch_size: 8
+  n_epochs: 200
+  batch_size: 64
   use_cuda: 1
   gpu_id: 0
   deterministic: 22
@@ -47,7 +47,7 @@ run:
 
 quantize:
   weight_bit: 8
-  input_bit: 6
+  input_bit: 8
 
 checkpoint:
   save_best_model_k: 3
@@ -58,10 +58,14 @@ checkpoint:
 
 model:
   name: "QMobileViT"
-  dim: [144, 192, 240]
-  depth: [2, 4, 3]
-  channels: [16, 32, 64, 64, 96, 96, 128, 128, 160, 160, 640]
-  expansion: 4
+  dim: [48, 64, 80]
+  depth: [2, 3, 2]
+  channels: [16, 16, 24, 24, 32, 32, 48, 48, 64, 64, 256]
+  expansion: 2
+  # dim: [144, 192, 240]
+  # depth: [2, 4, 3]
+  # channels: [16, 32, 64, 64, 96, 96, 128, 128, 160, 160, 640]
+  # expansion: 4
   conv_cfg:
     type: QConv2d
     w_bit: 8

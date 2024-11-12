@@ -60,7 +60,7 @@ checkpoint:
   no_linear: 0
 
 model:
-  name: "MobileViT"
+  name: "QMobileViT"
   # conv_cfg:
   #   type: TeMPOBlockConv2d
   #   mode: "weight"
