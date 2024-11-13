@@ -66,6 +66,9 @@ model:
   # depth: [2, 4, 3]
   # channels: [16, 32, 64, 64, 96, 96, 128, 128, 160, 160, 640]
   # expansion: 4
+  is_moe: False
+  expert_num: 8
+  top_k: 2
   conv_cfg:
     type: QConv2d
     w_bit: 8

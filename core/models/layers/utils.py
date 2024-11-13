@@ -834,8 +834,22 @@ class ActQuantizer_LSQ(nn.Module):
         if self.q_mode == "kernel_wise":
             logger.info(f"Scale dimension: {self.alpha.shape}")
         # choose implementation from https://github.com/YanjingLi0202/Q-ViT/blob/main/Quant.py
+        
+        if x.numel() == 0:
+            # 处理空张量情况
+            self._compute_quant_range()
+            self.init_state.fill_(1)
+            return
+            
+        if x.dim() == 0: 
+            min_val = x.data
+        elif x.dim() == 1:  
+            min_val = x.data.min()
+        else: 
+            min_val = x.flatten().min()
+            
         if (
-            x.data.min() < -1e-5
+            min_val < -1e-5
         ):  # there are significant negative values we will use signed representation
             self.signed.data.fill_(1)
         self._compute_quant_range()
@@ -843,7 +857,7 @@ class ActQuantizer_LSQ(nn.Module):
         if self.offset:
             self.zero_point.data.copy_(
                 self.zero_point.data * 0.9
-                + 0.1 * (x.data.min() - self.alpha.data * self.Qn)
+                + 0.1 * (min_val - self.alpha.data * self.Qn)
             )
         self.init_state.fill_(1)
 
@@ -856,7 +870,8 @@ class ActQuantizer_LSQ(nn.Module):
 
         assert self.init_state == 1
 
-        g = 1.0 / (x.data.numel() * self.Qp) ** 0.5
+        # g = 1.0 / (x.data.numel() * self.Qp) ** 0.5
+        g = 1.0 / (max(x.data.numel() * self.Qp, 1e-10)) ** 0.5
 
         self.alpha.data.clamp_(min=1e-4)
 

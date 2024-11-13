@@ -1,4 +1,5 @@
-CUDA_VISIBLE_DEVICES=7 python scripts/cifar10/qmobilevit/train_moe.py
+export CUDA_VISIBLE_DEVICES=6 
+python scripts/cifar10/qmobilevit/train_moe.py
 
 # export CUDA_VISIBLE_DEVICES=7; 
 # python train.py configs/cifar10/qmobilevit/train/moe.yml \
