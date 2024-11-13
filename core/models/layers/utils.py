@@ -980,6 +980,8 @@ class WeightQuantizer_LSQ(nn.Module):
 
         if len(x.shape) == 2:  # linear layer
             alpha = alpha[..., None]
+        elif len(x.shape) == 3:  # attention layer
+            alpha = alpha[..., None, None]
         elif len(x.shape) == 4:  # conv layer
             alpha = alpha[..., None, None, None]
         elif len(x.shape) == 6:
@@ -990,11 +992,14 @@ class WeightQuantizer_LSQ(nn.Module):
         if self.offset:
             zero_point = round_pass(self.zero_point)
             zero_point = grad_scale(zero_point, g)
-            zero_point = (
-                zero_point[..., None]
-                if len(x.shape) == 2
-                else zero_point[..., None, None, None]
-            )
+            if len(x.shape) == 2:
+                zero_point = zero_point[..., None]
+            elif len(x.shape) == 3:
+                zero_point = zero_point[..., None, None]
+            elif len(x.shape) == 4:
+                zero_point = zero_point[..., None, None, None]
+            elif len(x.shape) == 6:
+                zero_point = zero_point[..., None, None, None, None, None]
             x = round_pass((x / alpha + zero_point).clamp(self.Qn, self.Qp))
             x = (x - zero_point) * alpha
         else:

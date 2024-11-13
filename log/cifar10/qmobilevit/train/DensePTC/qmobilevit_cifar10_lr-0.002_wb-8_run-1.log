@@ -1,0 +1,884 @@
+/home/jiaqigu/pkgs/miniforge3/envs/python311venv/lib/python3.11/site-packages/mmengine/optim/optimizer/zero_optimizer.py:11: DeprecationWarning: `TorchScript` support for functional optimizers is deprecated and will be removed in a future PyTorch release. Consider using the `torch.compile` optimizer instead.
+  from torch.distributed.optim import \
+[38;21m2024-11-13 10:43:39,571 - train.py[line:234] - INFO: dataset:
+  name: cifar10
+  root: /home/dataset/cifar10
+  train_valid_split_ratio: [0.9, 0.1]
+  train_valid_split_seed: 1
+  resize_mode: bicubic
+  center_crop: 32
+  n_test_samples: None
+  n_valid_samples: None
+  num_workers: 2
+  img_height: 32
+  img_width: 32
+  in_channels: 3
+  num_classes: 10
+  transform: augmented
+  shuffle: 0
+  augment: None
+criterion:
+  name: ce
+aux_criterion: None
+optimizer:
+  name: adamw
+  lr: 0.002
+  weight_decay: 0.0001
+  grad_clip_value: 0
+scheduler:
+  name: cosine
+  lr_gamma: 0.99
+  lr_min: 2e-05
+run:
+  experiment: cifar10_qmobilevit_train
+  n_epochs: 200
+  batch_size: 64
+  use_cuda: 1
+  gpu_id: 0
+  deterministic: 22
+  random_state: 42
+  log_interval: 200
+  train_noise: 0
+  grad_clip: False
+  max_grad_value: 1
+  do_distill: False
+  compile: False
+quantize:
+  weight_bit: 8
+  input_bit: 8
+noise:
+  phase_bias: 0
+  phase_noise_std: 0
+  gamma_noise_std: 0
+  crosstalk_factor: 0
+  random_state: 42
+  weight_noise_std: 0.0
+  output_noise_std: 0
+  crosstalk_flag: False
+  noise_flag: False
+  light_redist: False
+  input_power_gating: False
+  input_modulation_ER: 6
+  output_power_gating: False
+  crosstalk_scheduler:
+    interv_h: 20
+    interv_v: 120
+    interv_s: 9
+    ps_width: 6
+checkpoint:
+  save_best_model_k: 3
+  checkpoint_dir: cifar10/qmobileViT/train
+  model_comment: lr-0.0020_wb-8_run-1
+  resume: 0
+  restore_checkpoint: 
+  no_linear: 0
+model:
+  name: QMobileViT
+  conv_cfg:
+    type: QConv2d
+    w_bit: 8
+    in_bit: 8
+    out_bit: 8
+  linear_cfg:
+    type: QLinear
+    w_bit: 8
+    in_bit: 8
+    out_bit: 8
+  norm_cfg:
+    type: BN2d
+    affine: True
+  act_cfg:
+    type: ReLU6
+    inplace: True
+  dim: [48, 64, 80]
+  depth: [2, 3, 2]
+  channels: [16, 16, 24, 24, 32, 32, 48, 48, 64, 64, 256]
+  expansion: 2
+  matmul_cfg:
+    type: QMatMul
+    w_bit: 8
+    in_bit: 8
+    out_bit: 8
+debug:
+  verbose: 1
+  verboise: 1
+dst_scheduler: None[0m
+[38;21m2024-11-13 10:43:49,203 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,240 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,317 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,328 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,329 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,343 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,343 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,344 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,345 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,346 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,347 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,348 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,352 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,353 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,353 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,354 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,355 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,355 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,356 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,356 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,358 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,361 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,362 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,376 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,377 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,378 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,378 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,379 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,380 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,381 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,385 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,385 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,386 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,386 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,387 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,387 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,388 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,389 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,391 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,395 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,395 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,398 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,399 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,400 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,401 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,407 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,407 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,412 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,413 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,414 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,415 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,422 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,423 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,423 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,426 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,426 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,427 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,427 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,428 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,428 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,429 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,429 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,430 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,431 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,432 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,432 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,434 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,434 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,435 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,436 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,436 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,437 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,437 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,438 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,438 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,439 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,440 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,440 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,443 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,444 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,449 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,450 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,451 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,452 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,453 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,454 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,454 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,455 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,455 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,457 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,460 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,461 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,480 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,481 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,482 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,484 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,484 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,485 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,485 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,486 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,487 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,487 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,489 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,489 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,490 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,490 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,491 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,491 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,492 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,493 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,493 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,494 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,494 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,495 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,495 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,496 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,496 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,498 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,498 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,499 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,499 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,500 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,500 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,501 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,502 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,502 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,503 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,503 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,504 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,504 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,505 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,505 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,507 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,507 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,508 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,508 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,509 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,509 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,510 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,511 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,511 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,512 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,512 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,513 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,513 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,514 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,516 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,517 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,517 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,519 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,519 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,520 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,520 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,521 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,522 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,523 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,527 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,527 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,530 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,531 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,531 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,533 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,533 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,534 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,534 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,535 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,536 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,538 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,541 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,542 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,542 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,543 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,544 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,544 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,545 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,545 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,546 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,546 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,547 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,547 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,548 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,548 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,549 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,550 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,551 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,551 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,552 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,553 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,553 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,554 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,554 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,555 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,555 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,556 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,557 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,558 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,559 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,560 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,561 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,562 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,563 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,564 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,565 - utils.py[line:951] - INFO: LSQ Weight quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: False[0m
+[38;21m2024-11-13 10:43:49,565 - utils.py[line:831] - INFO: LSQ Act quantizer: (mode: tensor_wise): initialize weight scale for int8 quantization with offset: True[0m
+[38;21m2024-11-13 10:43:49,567 - train.py[line:270] - INFO: QMobileViT(
+  (conv1): ConvBlock(
+    (conv): QConv2d(
+      3, 16, kernel_size=(3, 3), stride=(2, 2), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+      (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+      (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+      (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+    )
+    (norm): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (activation): ReLU6(inplace=True)
+  )
+  (mobvit_blocks): Sequential(
+    (0): InvertedResidual(
+      (conv): Sequential(
+        (0): ConvBlock(
+          (conv): QConv2d(
+            16, 32, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activation): ReLU6(inplace=True)
+        )
+        (1): ConvBlock(
+          (conv): QConv2d(
+            32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activation): ReLU6(inplace=True)
+        )
+        (2): ConvBlock(
+          (conv): QConv2d(
+            32, 16, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+    )
+    (1): InvertedResidual(
+      (conv): Sequential(
+        (0): ConvBlock(
+          (conv): QConv2d(
+            16, 32, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activation): ReLU6(inplace=True)
+        )
+        (1): ConvBlock(
+          (conv): QConv2d(
+            32, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=32, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activation): ReLU6(inplace=True)
+        )
+        (2): ConvBlock(
+          (conv): QConv2d(
+            32, 24, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+    )
+    (2): InvertedResidual(
+      (conv): Sequential(
+        (0): ConvBlock(
+          (conv): QConv2d(
+            24, 48, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activation): ReLU6(inplace=True)
+        )
+        (1): ConvBlock(
+          (conv): QConv2d(
+            48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=48, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activation): ReLU6(inplace=True)
+        )
+        (2): ConvBlock(
+          (conv): QConv2d(
+            48, 24, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+    )
+    (3): InvertedResidual(
+      (conv): Sequential(
+        (0): ConvBlock(
+          (conv): QConv2d(
+            24, 48, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activation): ReLU6(inplace=True)
+        )
+        (1): ConvBlock(
+          (conv): QConv2d(
+            48, 48, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=48, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activation): ReLU6(inplace=True)
+        )
+        (2): ConvBlock(
+          (conv): QConv2d(
+            48, 32, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+    )
+    (4): QMobileViTBlock(
+      (conv1): ConvBlock(
+        (conv): QConv2d(
+          32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+          (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+          (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+        )
+        (norm): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (activation): ReLU6(inplace=True)
+      )
+      (conv2): ConvBlock(
+        (conv): QConv2d(
+          32, 48, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+          (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+          (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+        )
+        (norm): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (activation): ReLU6(inplace=True)
+      )
+      (transformer_layers): ModuleList(
+        (0-1): 2 x QTransformerEncoderLayer(
+          (self_attn): QAttention(
+            Quantized_Attention
+            (qkv): LinearBlock(
+              (linear): QLinear(
+                48, 96, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+                (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+                (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+                (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+              )
+            )
+            (proj): LinearBlock(
+              (linear): QLinear(
+                32, 48, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+                (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+                (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+                (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+              )
+            )
+            (quantized_matmul): MatMulBlock(
+              (matmul): QMatMul(
+                QuantizedMatMul, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+                (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+                (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+                (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+              )
+            )
+          )
+          (linear1): LinearBlock(
+            (linear): QLinear(
+              48, 96, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+              (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+              (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+              (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (linear2): LinearBlock(
+            (linear): QLinear(
+              96, 48, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+              (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+              (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+              (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            )
+          )
+          (norm1): LayerNorm((48,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((48,), eps=1e-05, elementwise_affine=True)
+          (activation): ReLU()
+        )
+      )
+      (conv3): ConvBlock(
+        (conv): QConv2d(
+          48, 32, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+          (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+          (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+        )
+        (norm): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (activation): ReLU6(inplace=True)
+      )
+      (conv4): ConvBlock(
+        (conv): QConv2d(
+          64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+          (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+          (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+        )
+        (norm): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (activation): ReLU6(inplace=True)
+      )
+    )
+    (5): InvertedResidual(
+      (conv): Sequential(
+        (0): ConvBlock(
+          (conv): QConv2d(
+            32, 64, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activation): ReLU6(inplace=True)
+        )
+        (1): ConvBlock(
+          (conv): QConv2d(
+            64, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=64, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activation): ReLU6(inplace=True)
+        )
+        (2): ConvBlock(
+          (conv): QConv2d(
+            64, 48, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+    )
+    (6): QMobileViTBlock(
+      (conv1): ConvBlock(
+        (conv): QConv2d(
+          48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+          (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+          (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+        )
+        (norm): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (activation): ReLU6(inplace=True)
+      )
+      (conv2): ConvBlock(
+        (conv): QConv2d(
+          48, 64, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+          (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+          (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+        )
+        (norm): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (activation): ReLU6(inplace=True)
+      )
+      (transformer_layers): ModuleList(
+        (0-2): 3 x QTransformerEncoderLayer(
+          (self_attn): QAttention(
+            Quantized_Attention
+            (qkv): LinearBlock(
+              (linear): QLinear(
+                64, 96, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+                (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+                (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+                (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+              )
+            )
+            (proj): LinearBlock(
+              (linear): QLinear(
+                32, 64, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+                (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+                (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+                (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+              )
+            )
+            (quantized_matmul): MatMulBlock(
+              (matmul): QMatMul(
+                QuantizedMatMul, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+                (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+                (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+                (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+              )
+            )
+          )
+          (linear1): LinearBlock(
+            (linear): QLinear(
+              64, 256, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+              (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+              (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+              (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (linear2): LinearBlock(
+            (linear): QLinear(
+              256, 64, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+              (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+              (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+              (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            )
+          )
+          (norm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          (activation): ReLU()
+        )
+      )
+      (conv3): ConvBlock(
+        (conv): QConv2d(
+          64, 48, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+          (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+          (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+        )
+        (norm): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (activation): ReLU6(inplace=True)
+      )
+      (conv4): ConvBlock(
+        (conv): QConv2d(
+          96, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+          (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+          (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+        )
+        (norm): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (activation): ReLU6(inplace=True)
+      )
+    )
+    (7): InvertedResidual(
+      (conv): Sequential(
+        (0): ConvBlock(
+          (conv): QConv2d(
+            48, 96, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activation): ReLU6(inplace=True)
+        )
+        (1): ConvBlock(
+          (conv): QConv2d(
+            96, 96, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=96, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (activation): ReLU6(inplace=True)
+        )
+        (2): ConvBlock(
+          (conv): QConv2d(
+            96, 64, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+            (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+            (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          )
+          (norm): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+    )
+    (8): QMobileViTBlock(
+      (conv1): ConvBlock(
+        (conv): QConv2d(
+          64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+          (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+          (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+        )
+        (norm): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (activation): ReLU6(inplace=True)
+      )
+      (conv2): ConvBlock(
+        (conv): QConv2d(
+          64, 80, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+          (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+          (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+        )
+        (norm): BatchNorm2d(80, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (activation): ReLU6(inplace=True)
+      )
+      (transformer_layers): ModuleList(
+        (0-1): 2 x QTransformerEncoderLayer(
+          (self_attn): QAttention(
+            Quantized_Attention
+            (qkv): LinearBlock(
+              (linear): QLinear(
+                80, 96, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+                (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+                (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+                (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+              )
+            )
+            (proj): LinearBlock(
+              (linear): QLinear(
+                32, 80, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+                (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+                (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+                (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+              )
+            )
+            (quantized_matmul): MatMulBlock(
+              (matmul): QMatMul(
+                QuantizedMatMul, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+                (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+                (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+                (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+              )
+            )
+          )
+          (linear1): LinearBlock(
+            (linear): QLinear(
+              80, 320, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+              (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+              (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+              (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            )
+          )
+          (dropout): Dropout(p=0.0, inplace=False)
+          (linear2): LinearBlock(
+            (linear): QLinear(
+              320, 80, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+              (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+              (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+              (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+            )
+          )
+          (norm1): LayerNorm((80,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((80,), eps=1e-05, elementwise_affine=True)
+          (activation): ReLU()
+        )
+      )
+      (conv3): ConvBlock(
+        (conv): QConv2d(
+          80, 64, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+          (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+          (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+        )
+        (norm): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (activation): ReLU6(inplace=True)
+      )
+      (conv4): ConvBlock(
+        (conv): QConv2d(
+          128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+          (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+          (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+          (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+        )
+        (norm): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (activation): ReLU6(inplace=True)
+      )
+    )
+  )
+  (conv_last): ConvBlock(
+    (conv): QConv2d(
+      64, 256, kernel_size=(1, 1), stride=(1, 1), in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+      (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+      (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+      (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+    )
+    (norm): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (activation): ReLU6(inplace=True)
+  )
+  (pool): AdaptiveAvgPool2d(output_size=1)
+  (final_layer): LinearBlock(
+    (linear): QLinear(
+      256, 10, in_bits=8, w_bits=8, out_bits=8, input_noise_std=0, weight_noise_std=0, output_noise_std=0
+      (input_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+      (weight_quantizer): WeightQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': True, 'offset': False})
+      (output_quantizer): ActQuantizer_LSQ({'nbits': 8, 'mode': 'tensor_wise', 'signed': False, 'offset': True})
+    )
+  )
+)[0m
+Files already downloaded and verified
+Files already downloaded and verified
+set weight_decay to 0 for ['conv1.conv.input_quantizer', 'conv1.conv.input_quantizer', 'conv1.conv.weight_quantizer', 'conv1.conv.output_quantizer', 'conv1.conv.output_quantizer', 'conv1.norm', 'mobvit_blocks.0.conv.0.conv.input_quantizer', 'mobvit_blocks.0.conv.0.conv.input_quantizer', 'mobvit_blocks.0.conv.0.conv.weight_quantizer', 'mobvit_blocks.0.conv.0.conv.output_quantizer', 'mobvit_blocks.0.conv.0.conv.output_quantizer', 'mobvit_blocks.0.conv.0.norm', 'mobvit_blocks.0.conv.1.conv.input_quantizer', 'mobvit_blocks.0.conv.1.conv.input_quantizer', 'mobvit_blocks.0.conv.1.conv.weight_quantizer', 'mobvit_blocks.0.conv.1.conv.output_quantizer', 'mobvit_blocks.0.conv.1.conv.output_quantizer', 'mobvit_blocks.0.conv.1.norm', 'mobvit_blocks.0.conv.2.conv.input_quantizer', 'mobvit_blocks.0.conv.2.conv.input_quantizer', 'mobvit_blocks.0.conv.2.conv.weight_quantizer', 'mobvit_blocks.0.conv.2.conv.output_quantizer', 'mobvit_blocks.0.conv.2.conv.output_quantizer', 'mobvit_blocks.0.conv.2.norm', 'mobvit_blocks.1.conv.0.conv.input_quantizer', 'mobvit_blocks.1.conv.0.conv.input_quantizer', 'mobvit_blocks.1.conv.0.conv.weight_quantizer', 'mobvit_blocks.1.conv.0.conv.output_quantizer', 'mobvit_blocks.1.conv.0.conv.output_quantizer', 'mobvit_blocks.1.conv.0.norm', 'mobvit_blocks.1.conv.1.conv.input_quantizer', 'mobvit_blocks.1.conv.1.conv.input_quantizer', 'mobvit_blocks.1.conv.1.conv.weight_quantizer', 'mobvit_blocks.1.conv.1.conv.output_quantizer', 'mobvit_blocks.1.conv.1.conv.output_quantizer', 'mobvit_blocks.1.conv.1.norm', 'mobvit_blocks.1.conv.2.conv.input_quantizer', 'mobvit_blocks.1.conv.2.conv.input_quantizer', 'mobvit_blocks.1.conv.2.conv.weight_quantizer', 'mobvit_blocks.1.conv.2.conv.output_quantizer', 'mobvit_blocks.1.conv.2.conv.output_quantizer', 'mobvit_blocks.1.conv.2.norm', 'mobvit_blocks.2.conv.0.conv.input_quantizer', 'mobvit_blocks.2.conv.0.conv.input_quantizer', 'mobvit_blocks.2.conv.0.conv.weight_quantizer', 'mobvit_blocks.2.conv.0.conv.output_quantizer', 'mobvit_blocks.2.conv.0.conv.output_quantizer', 'mobvit_blocks.2.conv.0.norm', 'mobvit_blocks.2.conv.1.conv.input_quantizer', 'mobvit_blocks.2.conv.1.conv.input_quantizer', 'mobvit_blocks.2.conv.1.conv.weight_quantizer', 'mobvit_blocks.2.conv.1.conv.output_quantizer', 'mobvit_blocks.2.conv.1.conv.output_quantizer', 'mobvit_blocks.2.conv.1.norm', 'mobvit_blocks.2.conv.2.conv.input_quantizer', 'mobvit_blocks.2.conv.2.conv.input_quantizer', 'mobvit_blocks.2.conv.2.conv.weight_quantizer', 'mobvit_blocks.2.conv.2.conv.output_quantizer', 'mobvit_blocks.2.conv.2.conv.output_quantizer', 'mobvit_blocks.2.conv.2.norm', 'mobvit_blocks.3.conv.0.conv.input_quantizer', 'mobvit_blocks.3.conv.0.conv.input_quantizer', 'mobvit_blocks.3.conv.0.conv.weight_quantizer', 'mobvit_blocks.3.conv.0.conv.output_quantizer', 'mobvit_blocks.3.conv.0.conv.output_quantizer', 'mobvit_blocks.3.conv.0.norm', 'mobvit_blocks.3.conv.1.conv.input_quantizer', 'mobvit_blocks.3.conv.1.conv.input_quantizer', 'mobvit_blocks.3.conv.1.conv.weight_quantizer', 'mobvit_blocks.3.conv.1.conv.output_quantizer', 'mobvit_blocks.3.conv.1.conv.output_quantizer', 'mobvit_blocks.3.conv.1.norm', 'mobvit_blocks.3.conv.2.conv.input_quantizer', 'mobvit_blocks.3.conv.2.conv.input_quantizer', 'mobvit_blocks.3.conv.2.conv.weight_quantizer', 'mobvit_blocks.3.conv.2.conv.output_quantizer', 'mobvit_blocks.3.conv.2.conv.output_quantizer', 'mobvit_blocks.3.conv.2.norm', 'mobvit_blocks.4.conv1.conv.input_quantizer', 'mobvit_blocks.4.conv1.conv.input_quantizer', 'mobvit_blocks.4.conv1.conv.weight_quantizer', 'mobvit_blocks.4.conv1.conv.output_quantizer', 'mobvit_blocks.4.conv1.conv.output_quantizer', 'mobvit_blocks.4.conv1.norm', 'mobvit_blocks.4.conv2.conv.input_quantizer', 'mobvit_blocks.4.conv2.conv.input_quantizer', 'mobvit_blocks.4.conv2.conv.weight_quantizer', 'mobvit_blocks.4.conv2.conv.output_quantizer', 'mobvit_blocks.4.conv2.conv.output_quantizer', 'mobvit_blocks.4.conv2.norm', 'mobvit_blocks.4.transformer_layers.0.self_attn.qkv.linear.input_quantizer', 'mobvit_blocks.4.transformer_layers.0.self_attn.qkv.linear.input_quantizer', 'mobvit_blocks.4.transformer_layers.0.self_attn.qkv.linear.weight_quantizer', 'mobvit_blocks.4.transformer_layers.0.self_attn.qkv.linear.output_quantizer', 'mobvit_blocks.4.transformer_layers.0.self_attn.qkv.linear.output_quantizer', 'mobvit_blocks.4.transformer_layers.0.self_attn.proj.linear.input_quantizer', 'mobvit_blocks.4.transformer_layers.0.self_attn.proj.linear.input_quantizer', 'mobvit_blocks.4.transformer_layers.0.self_attn.proj.linear.weight_quantizer', 'mobvit_blocks.4.transformer_layers.0.self_attn.proj.linear.output_quantizer', 'mobvit_blocks.4.transformer_layers.0.self_attn.proj.linear.output_quantizer', 'mobvit_blocks.4.transformer_layers.0.self_attn.quantized_matmul.matmul.input_quantizer', 'mobvit_blocks.4.transformer_layers.0.self_attn.quantized_matmul.matmul.input_quantizer', 'mobvit_blocks.4.transformer_layers.0.self_attn.quantized_matmul.matmul.weight_quantizer', 'mobvit_blocks.4.transformer_layers.0.self_attn.quantized_matmul.matmul.output_quantizer', 'mobvit_blocks.4.transformer_layers.0.self_attn.quantized_matmul.matmul.output_quantizer', 'mobvit_blocks.4.transformer_layers.0.linear1.linear.input_quantizer', 'mobvit_blocks.4.transformer_layers.0.linear1.linear.input_quantizer', 'mobvit_blocks.4.transformer_layers.0.linear1.linear.weight_quantizer', 'mobvit_blocks.4.transformer_layers.0.linear1.linear.output_quantizer', 'mobvit_blocks.4.transformer_layers.0.linear1.linear.output_quantizer', 'mobvit_blocks.4.transformer_layers.0.linear2.linear.input_quantizer', 'mobvit_blocks.4.transformer_layers.0.linear2.linear.input_quantizer', 'mobvit_blocks.4.transformer_layers.0.linear2.linear.weight_quantizer', 'mobvit_blocks.4.transformer_layers.0.linear2.linear.output_quantizer', 'mobvit_blocks.4.transformer_layers.0.linear2.linear.output_quantizer', 'mobvit_blocks.4.transformer_layers.1.self_attn.qkv.linear.input_quantizer', 'mobvit_blocks.4.transformer_layers.1.self_attn.qkv.linear.input_quantizer', 'mobvit_blocks.4.transformer_layers.1.self_attn.qkv.linear.weight_quantizer', 'mobvit_blocks.4.transformer_layers.1.self_attn.qkv.linear.output_quantizer', 'mobvit_blocks.4.transformer_layers.1.self_attn.qkv.linear.output_quantizer', 'mobvit_blocks.4.transformer_layers.1.self_attn.proj.linear.input_quantizer', 'mobvit_blocks.4.transformer_layers.1.self_attn.proj.linear.input_quantizer', 'mobvit_blocks.4.transformer_layers.1.self_attn.proj.linear.weight_quantizer', 'mobvit_blocks.4.transformer_layers.1.self_attn.proj.linear.output_quantizer', 'mobvit_blocks.4.transformer_layers.1.self_attn.proj.linear.output_quantizer', 'mobvit_blocks.4.transformer_layers.1.self_attn.quantized_matmul.matmul.input_quantizer', 'mobvit_blocks.4.transformer_layers.1.self_attn.quantized_matmul.matmul.input_quantizer', 'mobvit_blocks.4.transformer_layers.1.self_attn.quantized_matmul.matmul.weight_quantizer', 'mobvit_blocks.4.transformer_layers.1.self_attn.quantized_matmul.matmul.output_quantizer', 'mobvit_blocks.4.transformer_layers.1.self_attn.quantized_matmul.matmul.output_quantizer', 'mobvit_blocks.4.transformer_layers.1.linear1.linear.input_quantizer', 'mobvit_blocks.4.transformer_layers.1.linear1.linear.input_quantizer', 'mobvit_blocks.4.transformer_layers.1.linear1.linear.weight_quantizer', 'mobvit_blocks.4.transformer_layers.1.linear1.linear.output_quantizer', 'mobvit_blocks.4.transformer_layers.1.linear1.linear.output_quantizer', 'mobvit_blocks.4.transformer_layers.1.linear2.linear.input_quantizer', 'mobvit_blocks.4.transformer_layers.1.linear2.linear.input_quantizer', 'mobvit_blocks.4.transformer_layers.1.linear2.linear.weight_quantizer', 'mobvit_blocks.4.transformer_layers.1.linear2.linear.output_quantizer', 'mobvit_blocks.4.transformer_layers.1.linear2.linear.output_quantizer', 'mobvit_blocks.4.conv3.conv.input_quantizer', 'mobvit_blocks.4.conv3.conv.input_quantizer', 'mobvit_blocks.4.conv3.conv.weight_quantizer', 'mobvit_blocks.4.conv3.conv.output_quantizer', 'mobvit_blocks.4.conv3.conv.output_quantizer', 'mobvit_blocks.4.conv3.norm', 'mobvit_blocks.4.conv4.conv.input_quantizer', 'mobvit_blocks.4.conv4.conv.input_quantizer', 'mobvit_blocks.4.conv4.conv.weight_quantizer', 'mobvit_blocks.4.conv4.conv.output_quantizer', 'mobvit_blocks.4.conv4.conv.output_quantizer', 'mobvit_blocks.4.conv4.norm', 'mobvit_blocks.5.conv.0.conv.input_quantizer', 'mobvit_blocks.5.conv.0.conv.input_quantizer', 'mobvit_blocks.5.conv.0.conv.weight_quantizer', 'mobvit_blocks.5.conv.0.conv.output_quantizer', 'mobvit_blocks.5.conv.0.conv.output_quantizer', 'mobvit_blocks.5.conv.0.norm', 'mobvit_blocks.5.conv.1.conv.input_quantizer', 'mobvit_blocks.5.conv.1.conv.input_quantizer', 'mobvit_blocks.5.conv.1.conv.weight_quantizer', 'mobvit_blocks.5.conv.1.conv.output_quantizer', 'mobvit_blocks.5.conv.1.conv.output_quantizer', 'mobvit_blocks.5.conv.1.norm', 'mobvit_blocks.5.conv.2.conv.input_quantizer', 'mobvit_blocks.5.conv.2.conv.input_quantizer', 'mobvit_blocks.5.conv.2.conv.weight_quantizer', 'mobvit_blocks.5.conv.2.conv.output_quantizer', 'mobvit_blocks.5.conv.2.conv.output_quantizer', 'mobvit_blocks.5.conv.2.norm', 'mobvit_blocks.6.conv1.conv.input_quantizer', 'mobvit_blocks.6.conv1.conv.input_quantizer', 'mobvit_blocks.6.conv1.conv.weight_quantizer', 'mobvit_blocks.6.conv1.conv.output_quantizer', 'mobvit_blocks.6.conv1.conv.output_quantizer', 'mobvit_blocks.6.conv1.norm', 'mobvit_blocks.6.conv2.conv.input_quantizer', 'mobvit_blocks.6.conv2.conv.input_quantizer', 'mobvit_blocks.6.conv2.conv.weight_quantizer', 'mobvit_blocks.6.conv2.conv.output_quantizer', 'mobvit_blocks.6.conv2.conv.output_quantizer', 'mobvit_blocks.6.conv2.norm', 'mobvit_blocks.6.transformer_layers.0.self_attn.qkv.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.0.self_attn.qkv.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.0.self_attn.qkv.linear.weight_quantizer', 'mobvit_blocks.6.transformer_layers.0.self_attn.qkv.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.0.self_attn.qkv.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.0.self_attn.proj.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.0.self_attn.proj.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.0.self_attn.proj.linear.weight_quantizer', 'mobvit_blocks.6.transformer_layers.0.self_attn.proj.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.0.self_attn.proj.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.0.self_attn.quantized_matmul.matmul.input_quantizer', 'mobvit_blocks.6.transformer_layers.0.self_attn.quantized_matmul.matmul.input_quantizer', 'mobvit_blocks.6.transformer_layers.0.self_attn.quantized_matmul.matmul.weight_quantizer', 'mobvit_blocks.6.transformer_layers.0.self_attn.quantized_matmul.matmul.output_quantizer', 'mobvit_blocks.6.transformer_layers.0.self_attn.quantized_matmul.matmul.output_quantizer', 'mobvit_blocks.6.transformer_layers.0.linear1.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.0.linear1.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.0.linear1.linear.weight_quantizer', 'mobvit_blocks.6.transformer_layers.0.linear1.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.0.linear1.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.0.linear2.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.0.linear2.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.0.linear2.linear.weight_quantizer', 'mobvit_blocks.6.transformer_layers.0.linear2.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.0.linear2.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.1.self_attn.qkv.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.1.self_attn.qkv.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.1.self_attn.qkv.linear.weight_quantizer', 'mobvit_blocks.6.transformer_layers.1.self_attn.qkv.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.1.self_attn.qkv.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.1.self_attn.proj.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.1.self_attn.proj.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.1.self_attn.proj.linear.weight_quantizer', 'mobvit_blocks.6.transformer_layers.1.self_attn.proj.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.1.self_attn.proj.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.1.self_attn.quantized_matmul.matmul.input_quantizer', 'mobvit_blocks.6.transformer_layers.1.self_attn.quantized_matmul.matmul.input_quantizer', 'mobvit_blocks.6.transformer_layers.1.self_attn.quantized_matmul.matmul.weight_quantizer', 'mobvit_blocks.6.transformer_layers.1.self_attn.quantized_matmul.matmul.output_quantizer', 'mobvit_blocks.6.transformer_layers.1.self_attn.quantized_matmul.matmul.output_quantizer', 'mobvit_blocks.6.transformer_layers.1.linear1.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.1.linear1.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.1.linear1.linear.weight_quantizer', 'mobvit_blocks.6.transformer_layers.1.linear1.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.1.linear1.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.1.linear2.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.1.linear2.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.1.linear2.linear.weight_quantizer', 'mobvit_blocks.6.transformer_layers.1.linear2.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.1.linear2.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.2.self_attn.qkv.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.2.self_attn.qkv.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.2.self_attn.qkv.linear.weight_quantizer', 'mobvit_blocks.6.transformer_layers.2.self_attn.qkv.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.2.self_attn.qkv.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.2.self_attn.proj.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.2.self_attn.proj.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.2.self_attn.proj.linear.weight_quantizer', 'mobvit_blocks.6.transformer_layers.2.self_attn.proj.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.2.self_attn.proj.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.2.self_attn.quantized_matmul.matmul.input_quantizer', 'mobvit_blocks.6.transformer_layers.2.self_attn.quantized_matmul.matmul.input_quantizer', 'mobvit_blocks.6.transformer_layers.2.self_attn.quantized_matmul.matmul.weight_quantizer', 'mobvit_blocks.6.transformer_layers.2.self_attn.quantized_matmul.matmul.output_quantizer', 'mobvit_blocks.6.transformer_layers.2.self_attn.quantized_matmul.matmul.output_quantizer', 'mobvit_blocks.6.transformer_layers.2.linear1.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.2.linear1.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.2.linear1.linear.weight_quantizer', 'mobvit_blocks.6.transformer_layers.2.linear1.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.2.linear1.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.2.linear2.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.2.linear2.linear.input_quantizer', 'mobvit_blocks.6.transformer_layers.2.linear2.linear.weight_quantizer', 'mobvit_blocks.6.transformer_layers.2.linear2.linear.output_quantizer', 'mobvit_blocks.6.transformer_layers.2.linear2.linear.output_quantizer', 'mobvit_blocks.6.conv3.conv.input_quantizer', 'mobvit_blocks.6.conv3.conv.input_quantizer', 'mobvit_blocks.6.conv3.conv.weight_quantizer', 'mobvit_blocks.6.conv3.conv.output_quantizer', 'mobvit_blocks.6.conv3.conv.output_quantizer', 'mobvit_blocks.6.conv3.norm', 'mobvit_blocks.6.conv4.conv.input_quantizer', 'mobvit_blocks.6.conv4.conv.input_quantizer', 'mobvit_blocks.6.conv4.conv.weight_quantizer', 'mobvit_blocks.6.conv4.conv.output_quantizer', 'mobvit_blocks.6.conv4.conv.output_quantizer', 'mobvit_blocks.6.conv4.norm', 'mobvit_blocks.7.conv.0.conv.input_quantizer', 'mobvit_blocks.7.conv.0.conv.input_quantizer', 'mobvit_blocks.7.conv.0.conv.weight_quantizer', 'mobvit_blocks.7.conv.0.conv.output_quantizer', 'mobvit_blocks.7.conv.0.conv.output_quantizer', 'mobvit_blocks.7.conv.0.norm', 'mobvit_blocks.7.conv.1.conv.input_quantizer', 'mobvit_blocks.7.conv.1.conv.input_quantizer', 'mobvit_blocks.7.conv.1.conv.weight_quantizer', 'mobvit_blocks.7.conv.1.conv.output_quantizer', 'mobvit_blocks.7.conv.1.conv.output_quantizer', 'mobvit_blocks.7.conv.1.norm', 'mobvit_blocks.7.conv.2.conv.input_quantizer', 'mobvit_blocks.7.conv.2.conv.input_quantizer', 'mobvit_blocks.7.conv.2.conv.weight_quantizer', 'mobvit_blocks.7.conv.2.conv.output_quantizer', 'mobvit_blocks.7.conv.2.conv.output_quantizer', 'mobvit_blocks.7.conv.2.norm', 'mobvit_blocks.8.conv1.conv.input_quantizer', 'mobvit_blocks.8.conv1.conv.input_quantizer', 'mobvit_blocks.8.conv1.conv.weight_quantizer', 'mobvit_blocks.8.conv1.conv.output_quantizer', 'mobvit_blocks.8.conv1.conv.output_quantizer', 'mobvit_blocks.8.conv1.norm', 'mobvit_blocks.8.conv2.conv.input_quantizer', 'mobvit_blocks.8.conv2.conv.input_quantizer', 'mobvit_blocks.8.conv2.conv.weight_quantizer', 'mobvit_blocks.8.conv2.conv.output_quantizer', 'mobvit_blocks.8.conv2.conv.output_quantizer', 'mobvit_blocks.8.conv2.norm', 'mobvit_blocks.8.transformer_layers.0.self_attn.qkv.linear.input_quantizer', 'mobvit_blocks.8.transformer_layers.0.self_attn.qkv.linear.input_quantizer', 'mobvit_blocks.8.transformer_layers.0.self_attn.qkv.linear.weight_quantizer', 'mobvit_blocks.8.transformer_layers.0.self_attn.qkv.linear.output_quantizer', 'mobvit_blocks.8.transformer_layers.0.self_attn.qkv.linear.output_quantizer', 'mobvit_blocks.8.transformer_layers.0.self_attn.proj.linear.input_quantizer', 'mobvit_blocks.8.transformer_layers.0.self_attn.proj.linear.input_quantizer', 'mobvit_blocks.8.transformer_layers.0.self_attn.proj.linear.weight_quantizer', 'mobvit_blocks.8.transformer_layers.0.self_attn.proj.linear.output_quantizer', 'mobvit_blocks.8.transformer_layers.0.self_attn.proj.linear.output_quantizer', 'mobvit_blocks.8.transformer_layers.0.self_attn.quantized_matmul.matmul.input_quantizer', 'mobvit_blocks.8.transformer_layers.0.self_attn.quantized_matmul.matmul.input_quantizer', 'mobvit_blocks.8.transformer_layers.0.self_attn.quantized_matmul.matmul.weight_quantizer', 'mobvit_blocks.8.transformer_layers.0.self_attn.quantized_matmul.matmul.output_quantizer', 'mobvit_blocks.8.transformer_layers.0.self_attn.quantized_matmul.matmul.output_quantizer', 'mobvit_blocks.8.transformer_layers.0.linear1.linear.input_quantizer', 'mobvit_blocks.8.transformer_layers.0.linear1.linear.input_quantizer', 'mobvit_blocks.8.transformer_layers.0.linear1.linear.weight_quantizer', 'mobvit_blocks.8.transformer_layers.0.linear1.linear.output_quantizer', 'mobvit_blocks.8.transformer_layers.0.linear1.linear.output_quantizer', 'mobvit_blocks.8.transformer_layers.0.linear2.linear.input_quantizer', 'mobvit_blocks.8.transformer_layers.0.linear2.linear.input_quantizer', 'mobvit_blocks.8.transformer_layers.0.linear2.linear.weight_quantizer', 'mobvit_blocks.8.transformer_layers.0.linear2.linear.output_quantizer', 'mobvit_blocks.8.transformer_layers.0.linear2.linear.output_quantizer', 'mobvit_blocks.8.transformer_layers.1.self_attn.qkv.linear.input_quantizer', 'mobvit_blocks.8.transformer_layers.1.self_attn.qkv.linear.input_quantizer', 'mobvit_blocks.8.transformer_layers.1.self_attn.qkv.linear.weight_quantizer', 'mobvit_blocks.8.transformer_layers.1.self_attn.qkv.linear.output_quantizer', 'mobvit_blocks.8.transformer_layers.1.self_attn.qkv.linear.output_quantizer', 'mobvit_blocks.8.transformer_layers.1.self_attn.proj.linear.input_quantizer', 'mobvit_blocks.8.transformer_layers.1.self_attn.proj.linear.input_quantizer', 'mobvit_blocks.8.transformer_layers.1.self_attn.proj.linear.weight_quantizer', 'mobvit_blocks.8.transformer_layers.1.self_attn.proj.linear.output_quantizer', 'mobvit_blocks.8.transformer_layers.1.self_attn.proj.linear.output_quantizer', 'mobvit_blocks.8.transformer_layers.1.self_attn.quantized_matmul.matmul.input_quantizer', 'mobvit_blocks.8.transformer_layers.1.self_attn.quantized_matmul.matmul.input_quantizer', 'mobvit_blocks.8.transformer_layers.1.self_attn.quantized_matmul.matmul.weight_quantizer', 'mobvit_blocks.8.transformer_layers.1.self_attn.quantized_matmul.matmul.output_quantizer', 'mobvit_blocks.8.transformer_layers.1.self_attn.quantized_matmul.matmul.output_quantizer', 'mobvit_blocks.8.transformer_layers.1.linear1.linear.input_quantizer', 'mobvit_blocks.8.transformer_layers.1.linear1.linear.input_quantizer', 'mobvit_blocks.8.transformer_layers.1.linear1.linear.weight_quantizer', 'mobvit_blocks.8.transformer_layers.1.linear1.linear.output_quantizer', 'mobvit_blocks.8.transformer_layers.1.linear1.linear.output_quantizer', 'mobvit_blocks.8.transformer_layers.1.linear2.linear.input_quantizer', 'mobvit_blocks.8.transformer_layers.1.linear2.linear.input_quantizer', 'mobvit_blocks.8.transformer_layers.1.linear2.linear.weight_quantizer', 'mobvit_blocks.8.transformer_layers.1.linear2.linear.output_quantizer', 'mobvit_blocks.8.transformer_layers.1.linear2.linear.output_quantizer', 'mobvit_blocks.8.conv3.conv.input_quantizer', 'mobvit_blocks.8.conv3.conv.input_quantizer', 'mobvit_blocks.8.conv3.conv.weight_quantizer', 'mobvit_blocks.8.conv3.conv.output_quantizer', 'mobvit_blocks.8.conv3.conv.output_quantizer', 'mobvit_blocks.8.conv3.norm', 'mobvit_blocks.8.conv4.conv.input_quantizer', 'mobvit_blocks.8.conv4.conv.input_quantizer', 'mobvit_blocks.8.conv4.conv.weight_quantizer', 'mobvit_blocks.8.conv4.conv.output_quantizer', 'mobvit_blocks.8.conv4.conv.output_quantizer', 'mobvit_blocks.8.conv4.norm', 'conv_last.conv.input_quantizer', 'conv_last.conv.input_quantizer', 'conv_last.conv.weight_quantizer', 'conv_last.conv.output_quantizer', 'conv_last.conv.output_quantizer', 'conv_last.norm', 'final_layer.linear.input_quantizer', 'final_layer.linear.input_quantizer', 'final_layer.linear.weight_quantizer', 'final_layer.linear.output_quantizer', 'final_layer.linear.output_quantizer']/home/ziangyin/all_projects/DAC2025_Train_public/train.py:312: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  grad_scaler = amp.GradScaler(enabled=getattr(configs.run, "fp16", False))
+[38;21m2024-11-13 10:43:49,574 - train.py[line:313] - INFO: Number of parameters: 547428[0m
+[38;21m2024-11-13 10:43:49,574 - train.py[line:318] - INFO: Current checkpoint: ./checkpoint/cifar10/qmobileViT/train/QMobileViT_lr-0.0020_wb-8_run-1.pt[0m
+[38;21m2024-11-13 10:43:49,574 - train.py[line:354] - INFO: Experiment starts.[0m
+
+{}
+/home/ziangyin/all_projects/DAC2025_Train_public/train.py:61: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(enabled=grad_scaler._enabled):
+[38;21m2024-11-13 10:43:50,031 - train.py[line:120] - INFO: Train Epoch: 1 [     64/  45000 (  0%)] Loss: 2.6492e+00 class Loss: 2.6492e+00[0m
+[38;21m2024-11-13 10:44:26,503 - train.py[line:120] - INFO: Train Epoch: 1 [  12864/  45000 ( 29%)] Loss: 2.0579e+00 class Loss: 2.0579e+00[0m
+[38;21m2024-11-13 10:45:04,023 - train.py[line:120] - INFO: Train Epoch: 1 [  25664/  45000 ( 57%)] Loss: 1.9934e+00 class Loss: 1.9934e+00[0m
+[38;21m2024-11-13 10:45:41,116 - train.py[line:120] - INFO: Train Epoch: 1 [  38464/  45000 ( 85%)] Loss: 1.8154e+00 class Loss: 1.8154e+00[0m
+[38;21m2024-11-13 10:46:00,122 - train.py[line:132] - INFO: Train class Loss: 2.0014e+00, Accuracy: 11109/45000 (24.69%)[0m
+/home/ziangyin/all_projects/DAC2025_Train_public/train.py:160: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(enabled=fp16):
+[38;21m2024-11-13 10:46:06,019 - train.py[line:178] - INFO: 
+Validation set: Average loss: 1.7193e+00, Accuracy: 1615/5000 (32.30%)
+[0m
+/home/ziangyin/all_projects/DAC2025_Train_public/train.py:199: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(enabled=fp16):
+[38;21m2024-11-13 10:46:16,729 - train.py[line:220] - INFO: 
+Test set: Average loss: 1.6993e+00, Accuracy: 3265/10000 (32.65%)
+[0m
+[I] Model saved to ./checkpoint/cifar10/qmobileViT/train/QMobileViT_lr-0.0020_wb-8_run-1_acc-32.30_epoch-1.pt. Current best 3: [(32.3, 1)]
+[38;21m2024-11-13 10:46:17,052 - train.py[line:120] - INFO: Train Epoch: 2 [     64/  45000 (  0%)] Loss: 1.8209e+00 class Loss: 1.8209e+00[0m
+[38;21m2024-11-13 10:46:53,435 - train.py[line:120] - INFO: Train Epoch: 2 [  12864/  45000 ( 29%)] Loss: 1.8081e+00 class Loss: 1.8081e+00[0m
+[38;21m2024-11-13 10:47:29,986 - train.py[line:120] - INFO: Train Epoch: 2 [  25664/  45000 ( 57%)] Loss: 1.7955e+00 class Loss: 1.7955e+00[0m
+[38;21m2024-11-13 10:48:06,033 - train.py[line:120] - INFO: Train Epoch: 2 [  38464/  45000 ( 85%)] Loss: 1.5275e+00 class Loss: 1.5275e+00[0m
+[38;21m2024-11-13 10:48:24,618 - train.py[line:132] - INFO: Train class Loss: 1.6668e+00, Accuracy: 16892/45000 (37.54%)[0m
+[38;21m2024-11-13 10:48:30,124 - train.py[line:178] - INFO: 
+Validation set: Average loss: 1.5295e+00, Accuracy: 2143/5000 (42.86%)
+[0m
+[38;21m2024-11-13 10:48:40,763 - train.py[line:220] - INFO: 
+Test set: Average loss: 1.5089e+00, Accuracy: 4479/10000 (44.79%)
+[0m
+[I] Model saved to ./checkpoint/cifar10/qmobileViT/train/QMobileViT_lr-0.0020_wb-8_run-1_acc-42.86_epoch-2.pt. Current best 3: [(42.86, 2), (32.3, 1)]
+[38;21m2024-11-13 10:48:41,141 - train.py[line:120] - INFO: Train Epoch: 3 [     64/  45000 (  0%)] Loss: 1.6677e+00 class Loss: 1.6677e+00[0m
+[38;21m2024-11-13 10:49:18,168 - train.py[line:120] - INFO: Train Epoch: 3 [  12864/  45000 ( 29%)] Loss: 1.5953e+00 class Loss: 1.5953e+00[0m
+[38;21m2024-11-13 10:49:54,260 - train.py[line:120] - INFO: Train Epoch: 3 [  25664/  45000 ( 57%)] Loss: 1.6322e+00 class Loss: 1.6322e+00[0m
+[38;21m2024-11-13 10:50:31,575 - train.py[line:120] - INFO: Train Epoch: 3 [  38464/  45000 ( 85%)] Loss: 1.4764e+00 class Loss: 1.4764e+00[0m
+[38;21m2024-11-13 10:50:51,050 - train.py[line:132] - INFO: Train class Loss: 1.5316e+00, Accuracy: 19613/45000 (43.58%)[0m
+[38;21m2024-11-13 10:50:56,985 - train.py[line:178] - INFO: 
+Validation set: Average loss: 1.4064e+00, Accuracy: 2428/5000 (48.56%)
+[0m
+[38;21m2024-11-13 10:51:07,899 - train.py[line:220] - INFO: 
+Test set: Average loss: 1.3912e+00, Accuracy: 4962/10000 (49.62%)
+[0m
+[I] Model saved to ./checkpoint/cifar10/qmobileViT/train/QMobileViT_lr-0.0020_wb-8_run-1_acc-48.56_epoch-3.pt. Current best 3: [(48.56, 3), (42.86, 2), (32.3, 1)]
+[38;21m2024-11-13 10:51:08,284 - train.py[line:120] - INFO: Train Epoch: 4 [     64/  45000 (  0%)] Loss: 1.5022e+00 class Loss: 1.5022e+00[0m
+[38;21m2024-11-13 10:51:43,702 - train.py[line:120] - INFO: Train Epoch: 4 [  12864/  45000 ( 29%)] Loss: 1.2998e+00 class Loss: 1.2998e+00[0m
+[38;21m2024-11-13 10:52:20,099 - train.py[line:120] - INFO: Train Epoch: 4 [  25664/  45000 ( 57%)] Loss: 1.4800e+00 class Loss: 1.4800e+00[0m
+[38;21m2024-11-13 10:52:56,419 - train.py[line:120] - INFO: Train Epoch: 4 [  38464/  45000 ( 85%)] Loss: 1.3784e+00 class Loss: 1.3784e+00[0m
+[38;21m2024-11-13 10:53:15,981 - train.py[line:132] - INFO: Train class Loss: 1.4219e+00, Accuracy: 21640/45000 (48.09%)[0m
+[38;21m2024-11-13 10:53:21,523 - train.py[line:178] - INFO: 
+Validation set: Average loss: 1.2696e+00, Accuracy: 2668/5000 (53.36%)
+[0m
+[38;21m2024-11-13 10:53:32,650 - train.py[line:220] - INFO: 
+Test set: Average loss: 1.2614e+00, Accuracy: 5423/10000 (54.23%)
+[0m
+[I] Model ./checkpoint/cifar10/qmobileViT/train/QMobileViT_lr-0.0020_wb-8_run-1_acc-32.30_epoch-1.pt is removed
+[I] Model saved to ./checkpoint/cifar10/qmobileViT/train/QMobileViT_lr-0.0020_wb-8_run-1_acc-53.36_epoch-4.pt. Current best 3: [(53.36, 4), (48.56, 3), (42.86, 2)]
+[38;21m2024-11-13 10:53:33,033 - train.py[line:120] - INFO: Train Epoch: 5 [     64/  45000 (  0%)] Loss: 1.5322e+00 class Loss: 1.5322e+00[0m
