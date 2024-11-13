@@ -1,1 +1,1 @@
-CUDA_VISIBLE_DEVICES=6,7 python scripts/cifar10/qmobilevit/train_origin.py
+CUDA_VISIBLE_DEVICES=7 python scripts/cifar10/qmobilevit/train_origin.py
